@@ -1,0 +1,30 @@
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        int[] count = new int[100]; // To store frequency of each unique domino
+        int result = 0;
+
+        for (int[] d : dominoes) {
+            int a = d[0];
+            int b = d[1];
+
+            // Sort the domino
+             // Normalize the domino so that [a, b] and [b, a] are treated the same
+            if (a > b) {
+                int temp = a;
+                a = b;
+                b = temp;
+            }
+
+            // Create a unique key for the domino using base 10 representation
+            int key = a * 10 + b;
+
+            // Add the count of previous identical dominoes to the result
+            result += count[key];
+
+            // Increment the count for this domino configuration
+            count[key]++;
+        }
+
+        return result;
+    }
+}
