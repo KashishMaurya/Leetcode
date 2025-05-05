@@ -1,0 +1,57 @@
+//2D matrix
+// O (m * n)
+
+
+
+class Solution {
+    public List<Integer> spiralOrder(int[][] mat) {
+        int m = mat.length;
+        int n = mat[0].length;
+
+        ArrayList<Integer> res = new ArrayList<>();
+
+        // Initialize boundaries
+        int top = 0, bottom = m - 1, left = 0, right = n - 1;
+
+        // Iterate until all elements are printed
+        while (top <= bottom && left <= right) {
+
+            //top
+            for (int j = left; j <= right; j++) {
+                res.add(mat[top][j]);
+            }
+
+            //right
+            for (int i = top + 1; i <= bottom; i++) {
+                res.add(mat[i][right]);
+            }
+
+            //bottom
+            for (int j = right - 1; j >= left; j--) {
+                if (top == bottom) {
+                    break;
+                }
+
+                res.add(mat[bottom][j]);
+            }
+
+            //left
+            for (int i = bottom - 1; i >= top + 1; i--) {
+                if (left == right) {
+                    break;
+                }
+
+                res.add(mat[i][left]);
+            }
+
+            top++;
+            bottom--;
+            left++;
+            right--;
+
+        }
+
+        return res;
+
+    }
+}
