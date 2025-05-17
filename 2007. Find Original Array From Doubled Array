@@ -1,0 +1,47 @@
+class Solution {
+    public int[] findOriginalArray(int[] changed) {
+        int n = changed.length;
+
+        // step 1 - if off return []
+        if (n % 2 != 0) {
+            return new int[0];
+        }
+
+        // step 2 - sort
+        Arrays.sort(changed);
+
+        //step 3 - map -> int , freq
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        // add all nums with freq
+        for (int num: changed) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        List<Integer> result = new ArrayList<>();
+
+        //check
+        for (int num: changed) {
+            int twice = 2 * num;
+
+            //skip if its freq is 0 (might have been used as double value of someone before)
+            if (map.get(num) == 0) {
+                continue; //skip
+            }
+
+            //if twice not present or its freq = 0
+            if (!map.containsKey(twice) || map.get(twice) == 0) {
+                return new int[0];
+            }
+            
+            result.add(num);
+            
+            //freq-- of both num and its twice
+            map.put(num, map.get(num) - 1);
+            map.put(twice, map.get(twice) - 1);
+        }
+        
+        // Convert list to array
+        return result.stream().mapToInt(i -> i).toArray();
+    }
+}
