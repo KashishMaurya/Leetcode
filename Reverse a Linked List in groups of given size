@@ -1,0 +1,170 @@
+//iterative approach
+class GfG {
+  
+    // Function to reverse K groups
+    static Node reverseKGroup(Node head, int k) {
+        if (head == null) {
+            return head;
+        }
+
+        Node curr = head;
+        Node newHead = null;
+        Node tail = null;
+
+        while (curr != null) {
+            Node groupHead = curr;
+            Node prev = null;
+            Node nextNode = null;
+            int count = 0;
+
+            // Reverse the nodes in the current group
+            while (curr != null && count < k) {
+                nextNode = curr.next;
+                curr.next = prev;
+                prev = curr;
+                curr = nextNode;
+                count++;
+            }
+
+            // If newHead is null, set it to the
+            // last node of the first group
+            if (newHead == null) {
+                newHead = prev;
+            }
+
+            // Connect the previous group to the 
+            // current reversed group
+            if (tail != null) {
+                tail.next = prev;
+            }
+
+            // Move tail to the end of the
+          	// reversed group
+            tail = groupHead;
+        }
+
+        return newHead;
+    }
+
+
+//recursion
+class GfG {
+
+    static Node reverseKNodes(Node head, int k) {
+        Node curr = head;
+        Node prev = null;
+        Node next = null;
+        int count = 0;
+
+        while (curr != null && count < k) {
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+            count++;
+        }
+
+        return prev;
+    }
+
+    // Recursive function to reverse in groups of K
+    static Node reverseKGroup(Node head, int k) {
+        if (head == null) {
+            return head;
+        }
+
+        Node temp = head;
+        int count = 0;
+        while (temp != null && count < k) {
+            temp = temp.next;
+            count++;
+        }
+
+        Node groupHead = reverseKNodes(head, k);
+        
+        // Recursion for the next group
+        head.next = reverseKGroup(temp, k);
+
+        return groupHead;
+    }
+
+
+//using deque
+class GfG {
+
+    // Function to reverse the linked list
+  	// in groups using deque
+   	static Node reverseKGroup(Node head, int k) {
+        if (head == null || k == 1) {
+            return head;
+        }
+
+        Deque<Node> dq = new LinkedList<>();
+        Node curr = head;
+
+        while (curr != null) {
+            int count = 0;
+
+            // Push k nodes into the deque
+            while (curr != null && count < k) {
+                dq.addLast(curr);
+                curr = curr.next;
+                count++;
+            }
+
+            // Swap first and last nodes in the deque
+            while (!dq.isEmpty()) {
+                Node front = dq.peekFirst();
+                Node last = dq.peekLast();
+                swap(front, last); 
+              
+                if (!dq.isEmpty()) dq.pollFirst();
+                if (!dq.isEmpty()) dq.pollLast();
+            }
+        }
+
+        return head;
+    }
+
+
+//using stack
+class GfG {
+    static Node reverseKGroup(Node head, int k) {
+        if (head == null || k == 1) {
+            return head;
+        }
+
+        Stack<Node> st = new Stack<>();
+        Node curr = head;
+        Node prev = null;
+
+        while (curr != null) {
+
+            // Terminate the loop when either 
+          	// current == null or count >= k
+            int count = 0;
+            while (curr != null && count < k) {
+                st.push(curr);
+                curr = curr.next;
+                count++;
+            }
+
+            // Now pop the elements from the stack one by one
+            while (!st.isEmpty()) {
+              
+                // If the final list has not been started yet
+                if (prev == null) {
+                    prev = st.pop();
+                    head = prev;
+                } else {
+                    prev.next = st.pop();
+                    prev = prev.next;
+                }
+            }
+        }
+
+        // Set the next pointer of the last node to null
+        prev.next = null;
+
+        return head;
+    }
